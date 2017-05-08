@@ -41,4 +41,11 @@ public abstract class BaseDAO {
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
+	
+	public String setLimit(String query, Integer pageNo, Integer pageSize) {
+		if (query!=null) {
+			
+		}
+		return query;
+	}
 }

@@ -34,7 +34,7 @@ public class AuthorDAO extends BaseDAO implements ResultSetExtractor<List<Author
 			setPageNo(pageNo);
 			setPageSize(10);
 		}
-		return template.query("select * from tbl_author", new Object[]{}, this);
+		return template.query("select * from tbl_author", this);
 	}
 	
 	public Author readAuthorByID(Integer authorID) throws ClassNotFoundException, SQLException{
@@ -67,7 +67,7 @@ public class AuthorDAO extends BaseDAO implements ResultSetExtractor<List<Author
 		while(rs.next()){
 			Author a = new Author();
 			a.setAuthorId(rs.getInt("authorId"));
-			String authName = rs.getString("authorName");
+			a.setAuthorName(rs.getString("authorName"));
 			authors.add(a);
 		}
 		return authors;

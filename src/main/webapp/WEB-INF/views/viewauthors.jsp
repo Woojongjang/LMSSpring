@@ -42,7 +42,7 @@
 						href="editauthor.jsp?authorId='${a.authorId}'">Update</button></td>
 				<td><button type="button" class="btn btn-danger"
 						href="deleteAuthor?authorId='${a.authorId}'">Delete</button></td>
-			</tr>
+				</tr>
 			</gcit:forEach>
 		</tbody>
 	</table>
