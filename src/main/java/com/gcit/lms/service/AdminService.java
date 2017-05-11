@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.gcit.lms.dao.AuthorDAO;
 import com.gcit.lms.dao.BookDAO;
@@ -20,6 +25,7 @@ import com.gcit.lms.entity.Genre;
 import com.gcit.lms.entity.LibraryBranch;
 import com.gcit.lms.entity.Publisher;
 
+@RestController
 public class AdminService {
 	@Autowired
 	AuthorDAO adao;
@@ -39,14 +45,18 @@ public class AdminService {
 	@Autowired
 	BorrowerDAO brdao;
 	
-	public void addAuthor(Author author) {
+	@Transactional
+	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST, consumes="application/json")
+	public String addAuthor(@RequestBody Author author) {
 		try {
 			adao.addAuthor(author);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		return "AUTHOR ADDED";
 	}
 	
+	@Transactional
 	public void editAuthor(Author author) {
 		try {
 			adao.updateAuthor(author);
@@ -55,6 +65,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void editBook(Book book) {
 		try {
 			bdao.updateBook(book);
@@ -63,6 +74,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void addBook(Book book) {
 		try {
 			// EDIT BookDAO for addBookWithID to work with returning generated key
@@ -88,6 +100,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void addGenre(Genre genre)  {
 		try {
 			gdao.addGenre(genre);
@@ -96,6 +109,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void editGenre(Genre genre) {
 		try {
 			gdao.updateGenre(genre);
@@ -104,6 +118,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void addPublisher(Publisher publisher) {
 		try {
 			pdao.addPublisher(publisher);
@@ -112,6 +127,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void editPublisher(Publisher publisher) {
 		try {
 			pdao.updatePublisher(publisher);
@@ -120,6 +136,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void addBorrower(Borrower borrower) {
 		try {
 			brdao.addBorrower(borrower);
@@ -128,6 +145,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void editBorrower(Borrower borrower) {
 		try {
 			brdao.updateBorrower(borrower);
@@ -136,6 +154,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void addBranch(LibraryBranch branch) {
 		try {
 			lbdao.addBranch(branch);
@@ -144,6 +163,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void editBranch(LibraryBranch branch) {
 		try {
 			lbdao.updateBranch(branch);
@@ -273,6 +293,7 @@ public class AdminService {
 		return null;
 	}
 	
+	@Transactional
 	public void deleteAuthor(Author author) {
 		try {
 			adao.deleteAuthor(author);
@@ -281,6 +302,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void deleteBook(Book book) {
 		try {
 			bdao.deleteBook(book);
@@ -289,6 +311,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void deleteGenre(Genre genre) {
 		try {
 			gdao.deleteGenre(genre);
@@ -297,6 +320,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void deletePublisher(Publisher publisher) {
 		try {
 			pdao.deletePublisher(publisher);
@@ -305,6 +329,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void deleteBorrower(Borrower borrower) {
 		try {
 			brdao.deleteBorrower(borrower);
@@ -313,6 +338,7 @@ public class AdminService {
 		}
 	}
 	
+	@Transactional
 	public void deleteBranch(LibraryBranch branch) {
 		try {
 			lbdao.deleteBranch(branch);

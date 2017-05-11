@@ -110,20 +110,20 @@ public class Book implements Serializable{
 		return genres;
 	}
 	
-	public String getDetails() {
-		String details = this.publisher.getPublisherName();
-		if(this.authors!=null && !this.authors.isEmpty()) {
-			for(Author a : this.authors) {
-				details = details.concat(", "+a.getAuthorName());
-			}
-		}
-		if(this.genres!=null && !this.genres.isEmpty()) {
-			for(Genre g : this.genres) {
-				details = details.concat(", "+g.getGenreName());
-			}
-		}
-		return details;
-	}
+//	public String getDetails() {
+//		String details = this.publisher.getPublisherName();
+//		if(this.authors!=null && !this.authors.isEmpty()) {
+//			for(Author a : this.authors) {
+//				details = details.concat(", "+a.getAuthorName());
+//			}
+//		}
+//		if(this.genres!=null && !this.genres.isEmpty()) {
+//			for(Genre g : this.genres) {
+//				details = details.concat(", "+g.getGenreName());
+//			}
+//		}
+//		return details;
+//	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

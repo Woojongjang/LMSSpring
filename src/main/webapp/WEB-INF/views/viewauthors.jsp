@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@include file="include.html"%>
 
-<div>
+<div class="container" role="main">
 	<div class="page-header">
 		<h1>List of Authors in LMS</h1>
 	</div>
@@ -27,14 +27,16 @@
 		<thead>
 			<tr>
 				<th>#</th>
+				<th>Author ID</th>
 				<th>Author Name</th>
 				<th>Edit</th>
 				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
-			<gcit:forEach items="${authors}" var="a">
+			<gcit:forEach items="${authors}" var="a" varStatus="myIndex">
 				<tr>
+				<td>${myIndex.index + 1}</td>
 				<td>${a.authorId}</td>
 				<td>${a.authorName}</td>
 				<td><button type="button" class="btn btn-primary"

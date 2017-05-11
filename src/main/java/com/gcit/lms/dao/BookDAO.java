@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.gcit.lms.entity.Author;
 import com.gcit.lms.entity.Book;
@@ -20,6 +21,8 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 	}
 	
 	public Integer addBookWithID(Book book) throws ClassNotFoundException, SQLException{
+		//KeyHolder holder = new GeneratedKeyHolder();
+		//template.
 		return template.update("insert into tbl_book (title) values (?)", new Object[] {book.getTitle()}, this);
 	}
 	
