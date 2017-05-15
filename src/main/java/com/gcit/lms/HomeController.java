@@ -56,7 +56,12 @@ public class HomeController {
 
 	@RequestMapping(value = "/viewAuthors", method = RequestMethod.GET)
 	public String viewAuthors(Locale locale, Model model) {
-		List<Author> authors = adminService.getAllAuthors(1);
+		List<Author> authors = new ArrayList<Author>();
+		try {
+			authors = adao.readAllAuthors(1);
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("authors", authors);
 		return "viewauthors";
 	}

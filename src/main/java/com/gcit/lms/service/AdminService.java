@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +48,7 @@ public class AdminService {
 	BorrowerDAO brdao;
 	
 	@Transactional
-	@RequestMapping(value = "/addAuthor", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/Authors", method = RequestMethod.POST, consumes="application/json")
 	public String addAuthor(@RequestBody Author author) {
 		try {
 			adao.addAuthor(author);
@@ -57,12 +59,16 @@ public class AdminService {
 	}
 	
 	@Transactional
-	public void editAuthor(Author author) {
+	@RequestMapping(value = "/Authors/{authorId}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
+	public Author editAuthor(@RequestBody Author author, @PathVariable Integer authorId) {
 		try {
+			author.setAuthorId(authorId);
 			adao.updateAuthor(author);
+			return adao.readAuthorByID(authorId);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	@Transactional
@@ -181,10 +187,19 @@ public class AdminService {
 		return null;
 	}
 	
-	public List<Author> getAllAuthors(Integer pageNo) {
+	@Transactional
+	@RequestMapping(value = {"/Authors", "/Authors/{pageNo}", "/Authors/{pageNo}/{searchString}"}, method = RequestMethod.GET, produces = "application/json")
+	public List<Author> getAllAuthors(@PathVariable Optional<Integer> pageNo, @PathVariable Optional<String> searchString) {
 		List<Author> authors = new ArrayList<>();
 		try {
-			authors = adao.readAllAuthors(pageNo);
+			if (searchString.isPresent()) {
+				authors = adao.readAuthorsByName(pageNo.get(), searchString.get());
+			} else if (pageNo.isPresent()) {
+				authors = adao.readAllAuthors(pageNo.get());
+			}
+			else {
+				authors = adao.readAllAuthors(null);
+			}
 			for (Author a : authors) {
 				a.setBooks(bdao.readAllBooksByAuthorID(a.getAuthorId()));
 			}
@@ -193,10 +208,32 @@ public class AdminService {
 		}
 		return authors;
 	}
+	
+//	@Transactional
+//	@RequestMapping(value = "/Authors", method = RequestMethod.GET, produces = "application/json")
+//	public List<Author> getAllAuthors() {
+//		List<Author> authors = new ArrayList<>();
+//		try {
+//			authors = adao.readAllAuthors(null);
+//			for (Author a : authors) {
+//				a.setBooks(bdao.readAllBooksByAuthorID(a.getAuthorId()));
+//			}
+//		} catch (ClassNotFoundException | SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return authors;
+//	}
 
-	public List<Genre> getAllGenres(Integer pageNo) {
+	@Transactional
+	@RequestMapping(value="/Genres", method=RequestMethod.GET, produces="application/json")
+	public List<Genre> getAllGenres() {
+		List<Genre> genres = new ArrayList<Genre>();
 		try {
-			return gdao.readAllGenres(pageNo);
+			genres = gdao.readAllGenres(null);
+			for (Genre g : genres) {
+				g.setBooks(bdao.readAllBooksByGenreID(g.getGenreId()));
+			}
+			return genres;
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

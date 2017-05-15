@@ -42,9 +42,12 @@ public abstract class BaseDAO {
 		this.pageSize = pageSize;
 	}
 	
-	public String setLimit(String query, Integer pageNo, Integer pageSize) {
-		if (query!=null) {
-			
+	public String setLimit(String query) {
+		if (query!=null && query.length() > 0) {
+			if(pageNo!=null) {
+				int index = (getPageNo()-1)*10;
+				query = query + " LIMIT " + index + ", " + getPageSize();
+			}
 		}
 		return query;
 	}

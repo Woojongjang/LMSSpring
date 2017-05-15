@@ -130,6 +130,10 @@ public class BookDAO extends BaseDAO implements ResultSetExtractor<List<Book>>{
 		return template.query("select * from tbl_book where bookId IN (Select bookId from tbl_book_authors where authorId = ?)", new Object[]{authorId}, this);
 	}
 	
+	public List<Book> readAllBooksByGenreID(Integer genreId){
+		return template.query("select * from tbl_book where bookId IN (Select bookId from tbl_book_genres where genre_id = ?)", new Object[]{genreId}, this);
+	}
+	
 	@Override
 	public List<Book> extractData(ResultSet rs) throws SQLException {
 		List<Book> books = new ArrayList<>();
